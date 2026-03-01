@@ -1,0 +1,99 @@
+body {
+    font-family: 'Quicksand', sans-serif;
+}
+
+h1, h2, h3 {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+}
+
+/* HEADER */
+header {
+    background-color: #ff6f91;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+
+/* NAVBAR */
+nav {
+    background-color: #f8a5c2; /* pink soft */
+    padding: 8px 15px;
+    text-align: center;
+}
+
+nav ul {
+    list-style-type: none; /* hilangkan bullet */
+
+}
+
+nav ul li {
+    display: inline; /* buat list jadi horizontal */
+
+}
+
+nav ul li a {
+    color: white;     
+    text-decoration: none;  
+
+}
+
+/* LINK NAVBAR */
+nav a {
+    color: purple;       
+    text-decoration: underline;  
+    margin-right: 15px; 
+    font-size: 18px;
+}
+
+/* LAYOUT */
+.container {
+    display: flex;
+    padding: 20px;
+    gap: 20px;
+}
+
+/* MAIN CONTENT */
+.main-content {
+    flex: 2;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 15px;
+}
+
+/* SIDEBAR */
+.sidebar {
+    flex: 1;
+    background-color: #ffe5ec;
+    padding: 20px;
+    border-radius: 15px;
+}
+
+/* DESKRIPSI */
+.desc {
+    font-size: 14px;
+    color: #c9184a;
+    margin-bottom: 15px;
+    line-height: 1.6;
+    font-weight: 700;
+}
+
+/* BUTTON */
+.btn {
+    background-color: #ff6f91;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-bottom: 15px;
+}
+
+/* FOOTER */
+footer {
+    background-color: #ffc2d1;
+    text-align: center;
+    padding: 15px;
+    margin-top: 20px;
+}
