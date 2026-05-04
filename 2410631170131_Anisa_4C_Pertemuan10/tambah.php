@@ -1,64 +1,74 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Tambah Menu</title>
+    <title>Tambah Buku</title>
+    <style>
+body {
+    font-family: Arial;
+    background-color: #f4f4f4;
+    padding: 20px;
+}
 
-    <!-- Bootstrap CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+h2 {
+    text-align: center;
+}
+
+form {
+    background: white;
+    padding: 20px;
+    width: 300px;
+    margin: auto;
+    border-radius: 5px;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+}
+
+button {
+    margin-top: 10px;
+    padding: 10px;
+    width: 100%;
+    background-color: #007bff;
+    color: white;
+    border: none;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+</style>
 </head>
-<body class="bg-light">
+<body>
 
-<div class="container mt-5">
-    <div class="card shadow">
-        <div class="card-header bg-primary text-white">
-            <h4 class="mb-0">Tambah Menu Makanan</h4>
-        </div>
+<h2>Tambah Buku</h2>
 
-        <div class="card-body">
-            <form method="POST" action="proses_tambah.php">
+<form action="proses_tambah.php" method="POST">
+    Judul:
+    <input type="text" name="Judul" required>
+    <br><br>
 
-                <div class="mb-3">
-                    <label class="form-label">Nama Menu</label>
-                    <input type="text" name="nama_menu" class="form-control" required>
-                </div>
+    Penulis:
+    <input type="text" name="Penulis" required>
+    <br><br>
 
-                <div class="mb-3">
-                    <label class="form-label">Kategori</label>
-                    <select name="kategori" class="form-select" required>
-                        <option value="">-- Pilih Kategori --</option>
-                        <option value="Makanan">Makanan</option>
-                        <option value="Minuman">Minuman</option>
-                        <option value="Snack">Snack</option>
-                    </select>
-                </div>
+    Tahun Terbit:
+    <input type="number" name="Tahun_terbit" required>
+    <br><br>
 
-                <div class="mb-3">
-                    <label class="form-label">Harga</label>
-                    <input type="number" name="harga" class="form-control" required>
-                </div>
+    Harga:
+    <input type="number" name="Harga" required>
+    <br><br>
 
-                <div class="mb-3">
-                    <label class="form-label">Stock</label>
-                    <input type="number" name="stock" class="form-control" required>
-                </div>
+    Stock:
+    <input type="number" name="Stock" required>
+    <br><br>
 
-                <div class="mb-3">
-                    <label class="form-label">Deskripsi</label>
-                    <textarea name="deskripsi" class="form-control" rows="3"></textarea>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Tanggal Ditambahkan</label>
-                    <input type="date" name="tanggal_ditambahkan" class="form-control" required>
-                </div>
-
-                <button type="submit" class="btn btn-success">Simpan</button>
-                <a href="index.php" class="btn btn-secondary">Kembali</a>
-
-            </form>
-        </div>
-    </div>
-</div>
+    <button type="submit">Simpan</button>
+    <a href="index.php">Kembali</a>
+</form>
 
 </body>
 </html>

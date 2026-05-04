@@ -4,7 +4,10 @@ include 'koneksi.php';
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     $id = $_GET['id'];
 
-    $stmt = $conn->prepare("SELECT * FROM menu WHERE id=?");
+    $stmt = $conn->prepare(
+        "SELECT * FROM buku WHERE ID=?"
+    );
+
     $stmt->bind_param("i", $id);
     $stmt->execute();
 
@@ -24,43 +27,76 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Edit Menu</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Edit Buku</title>
+    <style>
+body {
+    font-family: Arial;
+    background-color: #f4f4f4;
+    padding: 20px;
+}
+
+h2 {
+    text-align: center;
+}
+
+form {
+    background: white;
+    padding: 20px;
+    width: 300px;
+    margin: auto;
+    border-radius: 5px;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+}
+
+button {
+    margin-top: 10px;
+    padding: 10px;
+    width: 100%;
+    background-color: #007bff;
+    color: white;
+    border: none;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+</style>
 </head>
 <body>
 
-<div class="container">
-    <h2>Edit Menu Makanan</h2>
+<h2>Edit Buku</h2>
 
-    <form method="POST" action="proses_edit.php">
-        <input type="hidden" name="id" value="<?php echo $data['id']; ?>">
+<form action="proses_edit.php" method="POST">
+    <input type="hidden" name="ID" value="<?php echo htmlspecialchars($data['ID']); ?>">
 
-        <label>Nama Menu</label>
-        <input type="text" name="nama_menu" value="<?php echo htmlspecialchars($data['nama_menu']); ?>" required>
+    Judul:
+    <input type="text" name="Judul" value="<?php echo htmlspecialchars($data['Judul']); ?>" required>
+    <br><br>
 
-        <label>Kategori</label>
-        <select name="kategori" required>
-            <option value="Makanan" <?php if ($data['kategori'] == 'Makanan') echo 'selected'; ?>>Makanan</option>
-            <option value="Minuman" <?php if ($data['kategori'] == 'Minuman') echo 'selected'; ?>>Minuman</option>
-            <option value="Snack" <?php if ($data['kategori'] == 'Snack') echo 'selected'; ?>>Snack</option>
-        </select>
+    Penulis:
+    <input type="text" name="Penulis" value="<?php echo htmlspecialchars($data['Penulis']); ?>" required>
+    <br><br>
 
-        <label>Harga</label>
-        <input type="number" name="harga" value="<?php echo $data['harga']; ?>" required>
+    Tahun Terbit:
+    <input type="number" name="Tahun_terbit" value="<?php echo htmlspecialchars($data['Tahun_terbit']); ?>" required>
+    <br><br>
 
-        <label>Stok</label>
-        <input type="number" name="stok" value="<?php echo $data['stok']; ?>" required>
+    Harga:
+    <input type="number" name="Harga" value="<?php echo htmlspecialchars($data['Harga']); ?>" required>
+    <br><br>
 
-        <label>Deskripsi</label>
-        <textarea name="deskripsi"><?php echo htmlspecialchars($data['deskripsi']); ?></textarea>
+    Stock:
+    <input type="number" name="Stock" value="<?php echo htmlspecialchars($data['Stock']); ?>" required>
+    <br><br>
 
-        <label>Tanggal Ditambahkan</label>
-        <input type="date" name="tanggal_ditambahkan" value="<?php echo $data['tanggal_ditambahkan']; ?>" required>
-
-        <button type="submit" name="submit" class="btn">Update</button>
-        <a href="index.php" class="btn btn-hapus">Kembali</a>
-    </form>
-</div>
+    <button type="submit" name="submit">Update</button>
+    <a href="index.php">Kembali</a>
+</form>
 
 </body>
 </html>

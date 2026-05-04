@@ -2,35 +2,33 @@
 include 'koneksi.php';
 
 if (isset($_POST['submit'])) {
-    $id = $_POST['id'];
-    $nama_menu = $_POST['nama_menu'];
-    $kategori = $_POST['kategori'];
-    $harga = $_POST['harga'];
-    $stok = $_POST['stok'];
-    $deskripsi = $_POST['deskripsi'];
-    $tanggal_ditambahkan = $_POST['tanggal_ditambahkan'];
+    $ID = $_POST['ID'];
+    $Judul = $_POST['Judul'];
+    $Penulis = $_POST['Penulis'];
+    $Tahun_terbit = $_POST['Tahun_terbit'];
+    $Harga = $_POST['Harga'];
+    $Stock = $_POST['Stock'];
 
     $stmt = $conn->prepare(
-        "UPDATE menu 
-        SET nama_menu=?, kategori=?, harga=?, stok=?, deskripsi=?, tanggal_ditambahkan=? 
-        WHERE id=?"
+        "UPDATE buku
+        SET Judul=?, Penulis=?, Tahun_terbit=?, Harga=?, Stock=?
+        WHERE ID=?"
     );
 
     $stmt->bind_param(
-        "ssdissi",
-        $nama_menu,
-        $kategori,
-        $harga,
-        $stok,
-        $deskripsi,
-        $tanggal_ditambahkan,
-        $id
+        "ssidii",
+        $Judul,
+        $Penulis,
+        $Tahun_terbit,
+        $Harga,
+        $Stock,
+        $ID
     );
 
     if ($stmt->execute()) {
-        header("Location: index.php?status=edit_sukses");
+        header("Location: index.php?pesan=Data berhasil diedit");
     } else {
-        header("Location: index.php?status=gagal");
+        header("Location: index.php?pesan=Data gagal diedit");
     }
 
     $stmt->close();

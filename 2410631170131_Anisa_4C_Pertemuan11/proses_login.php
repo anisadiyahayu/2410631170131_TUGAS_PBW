@@ -1,10 +1,10 @@
 <?php
 session_start();
-include 'koneksi.php';
+include 'koneksi_db.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $username = trim($_POST['username']);
-    $password = trim($_POST['password']);
+    $username = $_POST['username'];
+    $password = $_POST['password'];
 
     $stmt = $conn->prepare("SELECT id, nama, katasandi FROM pengguna WHERE nama = ? AND katasandi = ?");
     $stmt->bind_param("ss", $username, $password);
@@ -14,8 +14,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($result->num_rows === 1) {
         $user = $result->fetch_assoc();
-
-        session_regenerate_id(true);
 
         $_SESSION['id'] = $user['id'];
         $_SESSION['nama'] = $user['nama'];
@@ -31,6 +29,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->close();
 }
 
-header("Location: login.php");
-exit;
+$conn->close();
 ?>

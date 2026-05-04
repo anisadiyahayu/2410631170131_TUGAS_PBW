@@ -8,189 +8,175 @@ if (!isset($_SESSION['login_Un51k4']) || $_SESSION['login_Un51k4'] !== true) {
 
 include 'koneksi.php';
 
-$cari = "";
+$sql = "SELECT * FROM buku";
+$result = $conn->query($sql);
 
-if (isset($_GET['cari']) && $_GET['cari'] !== "") {
-    $cari = $_GET['cari'];
-
-    $stmt = $conn->prepare("SELECT * FROM menu WHERE Nama_Menu LIKE ? OR Kategori LIKE ?");
-
-    if (!$stmt) {
-        die("Prepare gagal: " . $conn->error);
-    }
-
-    $keyword = "%" . $cari . "%";
-    $stmt->bind_param("ss", $keyword, $keyword);
-    $stmt->execute();
-    $result = $stmt->get_result();
-} else {
-    $sql = "SELECT * FROM menu";
-    $result = $conn->query($sql);
-
-    if (!$result) {
-        die("Query gagal: " . $conn->error);
-    }
+if (!$result) {
+    die("Query gagal: " . $conn->error);
 }
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Data Menu Kantin</title>
+    <title>Data Buku</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
 
-    <!-- Bootstrap CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        h2 {
+            text-align: center;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+
+        .top-bar b {
+            color: #007bff;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .btn-tambah {
+            display: inline-block;
+            margin-bottom: 10px;
+            background: #007bff;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+        }
+
+        .btn-tambah:hover {
+            background: #0056b3;
+            text-decoration: none;
+        }
+
+        .btn-logout {
+            background: #dc3545;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+        }
+
+        .btn-logout:hover {
+            background: #c82333;
+            text-decoration: none;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            background-color: white;
+        }
+
+        th {
+            background-color: #3e9bff;
+            color: white;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .pesan {
+            background: #d4edda;
+            color: #155724;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .aksi-edit {
+            color: #007bff;
+        }
+
+        .aksi-hapus {
+            color: #dc3545;
+        }
+    </style>
 </head>
+<body>
 
-<body class="bg-light">
+<h2>Data Buku</h2>
 
-<div class="container mt-4">
-
-    <h2 class="text-center mb-4">Data Menu Makanan Kantin</h2>
-
-    <!-- Bagian login dan logout -->
-    <div class="card shadow-sm mb-3">
-        <div class="card-body d-flex justify-content-between align-items-center">
-            <div>
-                Selamat datang,
-                <b><?php echo htmlspecialchars($_SESSION['nama']); ?></b>
-            </div>
-
-            <a href="logout.php"
-               class="btn btn-danger btn-sm"
-               onclick="return confirm('Yakin ingin logout?')">
-                Logout
-            </a>
-        </div>
+<div class="top-bar">
+    <div>
+        Selamat datang, 
+        <b><?php echo htmlspecialchars($_SESSION['nama']); ?></b>
     </div>
 
-    <!-- Alert -->
-    <?php if (isset($_GET['status'])) { ?>
-        <div class="alert alert-success">
-            <?php
-            if ($_GET['status'] == 'tambah_sukses') {
-                echo "Data menu berhasil ditambahkan!";
-            } elseif ($_GET['status'] == 'edit_sukses') {
-                echo "Data menu berhasil diubah!";
-            } elseif ($_GET['status'] == 'hapus_sukses') {
-                echo "Data menu berhasil dihapus!";
-            } else {
-                echo "Terjadi kesalahan!";
-            }
-            ?>
-        </div>
-    <?php } ?>
-
-    <!-- Tombol tambah -->
-    <div class="mb-3">
-        <a href="tambah.php" class="btn btn-primary">+ Tambah Menu</a>
+    <div>
+        <a href="logout.php" class="btn-logout" onclick="return confirm('Yakin ingin logout?')">
+            Logout
+        </a>
     </div>
-
-    <!-- Form cari -->
-    <form method="GET" action="index.php" class="row g-2 mb-3">
-        <div class="col-md-6">
-            <input type="text"
-                   name="cari"
-                   class="form-control"
-                   placeholder="Cari nama menu atau kategori..."
-                   value="<?php echo htmlspecialchars($cari); ?>">
-        </div>
-
-        <div class="col-md-2">
-            <button type="submit" class="btn btn-success w-100">Cari</button>
-        </div>
-
-        <div class="col-md-2">
-            <a href="index.php" class="btn btn-secondary w-100">Reset</a>
-        </div>
-    </form>
-
-    <!-- Tabel -->
-    <div class="card shadow-sm">
-        <div class="card-body">
-
-            <table class="table table-bordered table-striped table-hover">
-                <thead class="table-dark text-center">
-                    <tr>
-                        <th>No</th>
-                        <th>Nama Menu</th>
-                        <th>Kategori</th>
-                        <th>Harga</th>
-                        <th>Stock</th>
-                        <th>Deskripsi</th>
-                        <th>Tanggal</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                <?php
-                $no = 1;
-
-                if ($result->num_rows > 0) {
-                    while ($row = $result->fetch_assoc()) {
-                ?>
-                    <tr>
-                        <td class="text-center"><?php echo $no++; ?></td>
-
-                        <td><?php echo htmlspecialchars($row['Nama_Menu']); ?></td>
-
-                        <td><?php echo htmlspecialchars($row['Kategori']); ?></td>
-
-                        <td>
-                            Rp <?php echo number_format($row['Harga'], 0, ',', '.'); ?>
-                        </td>
-
-                        <td class="text-center">
-                            <?php echo htmlspecialchars($row['Stock']); ?>
-                        </td>
-
-                        <td>
-                            <?php echo htmlspecialchars($row['Deskripsi']); ?>
-                        </td>
-
-                        <td>
-                            <?php echo htmlspecialchars($row['Tanggal_ditambahkan']); ?>
-                        </td>
-
-                        <td class="text-center">
-                            <a href="edit.php?id=<?php echo urlencode($row['ID']); ?>"
-                               class="btn btn-warning btn-sm">
-                                Edit
-                            </a>
-
-                            <a href="hapus.php?id=<?php echo urlencode($row['ID']); ?>"
-                               class="btn btn-danger btn-sm"
-                               onclick="return confirm('Yakin ingin menghapus data ini?')">
-                                Hapus
-                            </a>
-                        </td>
-                    </tr>
-                <?php
-                    }
-                } else {
-                ?>
-                    <tr>
-                        <td colspan="8" class="text-center">
-                            Data tidak ditemukan.
-                        </td>
-                    </tr>
-                <?php } ?>
-                </tbody>
-            </table>
-
-        </div>
-    </div>
-
 </div>
+
+<?php
+if (isset($_GET['pesan'])) {
+    echo "<div class='pesan'>" . htmlspecialchars($_GET['pesan']) . "</div>";
+}
+?>
+
+<a href="tambah.php" class="btn-tambah">Tambah Buku</a>
+
+<table border="1" cellpadding="8" cellspacing="0">
+    <tr>
+        <th>ID</th>
+        <th>Judul</th>
+        <th>Penulis</th>
+        <th>Tahun Terbit</th>
+        <th>Harga</th>
+        <th>Stok</th>
+        <th>Aksi</th>
+    </tr>
+
+    <?php while ($row = $result->fetch_assoc()) { ?>
+    <tr>
+        <td><?php echo htmlspecialchars($row['ID']); ?></td>
+        <td><?php echo htmlspecialchars($row['Judul']); ?></td>
+        <td><?php echo htmlspecialchars($row['Penulis']); ?></td>
+        <td><?php echo htmlspecialchars($row['Tahun_terbit']); ?></td>
+        <td><?php echo number_format($row['Harga'], 2); ?></td>
+        <td><?php echo htmlspecialchars($row['Stock']); ?></td>
+        <td>
+            <a class="aksi-edit" href="edit.php?id=<?php echo urlencode($row['ID']); ?>">Edit</a>
+            |
+            <a class="aksi-hapus" href="hapus.php?id=<?php echo urlencode($row['ID']); ?>" onclick="return confirm('Yakin hapus data?')">
+                Hapus
+            </a>
+        </td>
+    </tr>
+    <?php } ?>
+</table>
 
 </body>
 </html>
 
 <?php
-if (isset($stmt)) {
-    $stmt->close();
-}
-
 $conn->close();
 ?>

@@ -1,7 +1,12 @@
 <?php
-$conn = new mysqli('localhost', 'root', '', 'Sistem_menu_kantin');
+$conn = new mysqli(
+    'localhost',
+    'root',
+    '',
+    'pemograman_web_contoh'
+);
 
 if ($conn->connect_error) {
-    die("Gagal koneksi: " . $conn->connect_error);
+    die("Gagal: " . $conn->connect_error);
 }
 ?>
